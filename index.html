@@ -1,0 +1,57 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save to Google Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Enter Text to Save in Google Sheet</h2>
+    
+    <input type="text" id="userInput" placeholder="Type something..." />
+    <button onclick="saveToSheet()">Save</button>
+    
+    <p id="statusMessage"></p>
+
+    <script>
+        function saveToSheet() {
+            let inputText = document.getElementById("userInput").value;
+            if (!inputText) {
+                alert("Please enter some text!");
+                return;
+            }
+            fetch("https://script.google.com/macros/s/AKfycbw3idBrRF14TIR4UbdBaPI8cMZfGMdpz5vXsKanU6Z7VciVyop9iIb_ShBDYNWQ0dJRNQ/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ input: inputText }) // Change `data` to `input`
+})
+            .then(() => {
+                document.getElementById("statusMessage").innerText = "✅ Data saved successfully!";
+                document.getElementById("userInput").value = ""; // Clear input
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("statusMessage").innerText = "❌ Error saving data.";
+            });
+        }
+    </script>
+
+</body>
+</html>
